@@ -5,7 +5,7 @@
       "jsx": "react",
       "moduleResolution": "node",
       "strict": true,
-      "noEmit": true,
+      //"noEmit": true,
       "allowJs": true,
       "skipLibCheck": true,
       "isolatedModules": true,
