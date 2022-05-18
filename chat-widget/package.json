@@ -91,7 +91,7 @@
     "compose-storybook": "start-storybook -c stories/.storybook -p 9009",
     "build-composite-storybook": "build-storybook -c stories/.storybook -o storybook-build",
     "build-storybook": "build-storybook",
-    "build": "yarn eslint . && yarn build:esm && yarn copy:esm && yarn build:cjs && yarn copy:cjs && tsc",
+    "build": "yarn build:esm && yarn copy:esm && yarn build:cjs && yarn copy:cjs && tsc",
     "test:unit": "jest -c jest.config.unit.cjs --env=jsdom --runInBand --force-exit",
     "test:visual": "jest -c jest.config.visual.cjs",
     "test:all": "yarn test:unit && yarn test:visual",
@@ -102,6 +102,7 @@
     "verify": "yarn install && yarn build-storybook && yarn test:all && yarn build && yarn storybook",
     "testpack": "yarn build && yarn pack",
     "build-sample": "yarn build && webpack --config ./webpack.config.cjs",
+    "test": "npm run storybook && cd automation_tests && npm run test",
     "build-sample:dev": "yarn build && webpack --config ./webpack.dev.config.cjs",
     "test:visual:build": "yarn build-storybook && yarn test:visual"
   },

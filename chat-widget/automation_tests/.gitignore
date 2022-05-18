@@ -1,0 +1,6 @@
+/dist
+/coverage
+/reports
+.env
+junit.xml
+screenshots/*
