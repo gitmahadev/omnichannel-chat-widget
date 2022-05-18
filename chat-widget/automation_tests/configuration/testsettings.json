@@ -1012,7 +1012,7 @@
   ],
   "devices": [],
   "launchBrowserSettings": {
-    "headless": true,
+    "headless": false,
     "slowMo": 10,
     "args": [
       "--disable-web-security"

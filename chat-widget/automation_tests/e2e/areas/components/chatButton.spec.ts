@@ -3,7 +3,7 @@ import * as playwright from "playwright"
 import { TestSettings } from "../../../configuration/test-settings" // "..../configuration/test-settings";
 import { BasePage } from "../../pages/base.page";
 
-describe('width test', () => {
+describe('live chat button', () => {
   let newBrowser: Browser;
   let context: BrowserContext;
   let page: BasePage;
@@ -23,8 +23,9 @@ describe('width test', () => {
     }
    });
 
-  test('Learn React', async () => {
+  test('chat button visible', async () => {
     page = new BasePage(await context.newPage());
-    await page.navigateToOrgUrl();
+    await page.openLiveChatWidget();
+    await page.waitUntilSelectorIsVisible('#oc-lcw-chat-button-title');
   });
 });

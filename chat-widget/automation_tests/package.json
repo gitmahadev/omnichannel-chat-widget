@@ -23,6 +23,7 @@
   },
   "scripts": {
     "compile": "tsc",
+    "clear_jest": "jest --clearCache",
     "test": "jest --detectOpenHandles --runInBand --passWithNoTests",
     "test:parallel": "jest",
     "test:parallel75": "jest --maxWorkers=75%",
@@ -46,6 +47,7 @@
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
     "filestream": "^5.0.0",
+    "fs": "^0.0.1-security",
     "hmacsha1": "^1.0.0",
     "jest-circus": "^26.1.0",
     "js-sha1": "^0.6.0",

@@ -1,6 +1,7 @@
 import { Page } from "playwright";
 import { AgentChatConstants, Constants, SelectorConstants } from "../Utility/Constants";
 import { IFrameConstants, IFrameHelper } from "../Utility/IFrameHelper";
+import fs from 'fs';
 
 export class BasePage {
     protected isBaseClosed = false;
@@ -32,9 +33,9 @@ export class BasePage {
         );
     }
 
-    public async navigateToOrgUrl() {
-        await this.Page.goto("http://localhost:6006/");
-        await this.Page.waitForNavigation();
+    public async openLiveChatWidget() {
+        const path = fs.realpathSync('test.html');
+        await this.Page.goto('file://' + path, {waitUntil: 'domcontentloaded'});
      }
 
     public async waitUntilSelectorIsVisible(selectorVal: string, maxCount = 3, page: Page = null, timeout: number = Constants.DefaultTimeout) {
@@ -43,6 +44,7 @@ export class BasePage {
         while (dataCount < maxCount) {
             try {
                 await pageObject.waitForSelector(selectorVal, { timeout });
+                await pageObject.waitForTimeout(5000);
                 return true;
             } catch {
                 dataCount++;

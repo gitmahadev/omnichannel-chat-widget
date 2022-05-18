@@ -84,9 +84,11 @@
     "markdown-it": "^12.3.2",
     "markdown-it-for-inline": "^0.1.1",
     "p-defer-es5": "^2.0.1",
+    "serve": "^13.0.2",
     "slack-markdown-it": "^1.0.5"
   },
   "scripts": {
+    "dev": "start webpack --config ./webpack.config.cjs",
     "storybook": "start-storybook -p 6006",
     "compose-storybook": "start-storybook -c stories/.storybook -p 9009",
     "build-composite-storybook": "build-storybook -c stories/.storybook -o storybook-build",
