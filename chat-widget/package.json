@@ -104,7 +104,8 @@
     "verify": "yarn install && yarn build-storybook && yarn test:all && yarn build && yarn storybook",
     "testpack": "yarn build && yarn pack",
     "build-sample": "yarn build && webpack --config ./webpack.config.cjs",
-    "test": "npm run storybook && cd automation_tests && npm run test",
+    "automation-test": "cd automation_tests && npm run test",
+    "automation-test:build": "yarn build-sample && cd automation_tests && npm run test",
     "build-sample:dev": "yarn build && webpack --config ./webpack.dev.config.cjs",
     "test:visual:build": "yarn build-storybook && yarn test:visual"
   },

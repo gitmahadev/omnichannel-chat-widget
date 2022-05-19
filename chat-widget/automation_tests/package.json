@@ -1,7 +1,7 @@
 {
   "name": "oc-playwright-service-integration",
   "version": "1.0.0",
-  "description": "Playwright automated E2E test cases for Omnichannel",
+  "description": "Playwright automated E2E test cases for LiveChatWidget",
   "devDependencies": {
     "@azure/cosmos": "^3.9.5",
     "@types/crypto-js": "^4.0.1",
@@ -25,10 +25,7 @@
     "compile": "tsc",
     "clear_jest": "jest --clearCache",
     "test": "jest --detectOpenHandles --runInBand --passWithNoTests",
-    "test:parallel": "jest",
-    "test:parallel75": "jest --maxWorkers=75%",
-    "test:parallel100": "jest --maxWorkers=100%",
-    "build-sample": "yarn build && webpack --config ./webpack.config.cjs"
+    "test:build": "npm run --prefix ../../chat-widget build-sample && npm run test"
   },
   "keywords": [],
   "author": "",
