@@ -1,6 +1,5 @@
 import { StyleOptions, createStore } from "botframework-webchat";
 
-import { ConversationState } from "../../../contexts/common/ConversationState";
 import { Dispatch } from "react";
 import { IDataMaskingInfo } from "../../webchatcontainerstateful/interfaces/IDataMaskingInfo";
 import { ILiveChatWidgetAction } from "../../../contexts/common/ILiveChatWidgetAction";
@@ -30,7 +29,9 @@ import htmlPlayerMiddleware from "../../webchatcontainerstateful/webchatcontroll
 import htmlTextMiddleware from "../../webchatcontainerstateful/webchatcontroller/middlewares/storemiddlewares/htmlTextMiddleware";
 import preProcessingMiddleware from "../../webchatcontainerstateful/webchatcontroller/middlewares/storemiddlewares/preProcessingMiddleware";
 import sanitizationMiddleware from "../../webchatcontainerstateful/webchatcontroller/middlewares/storemiddlewares/sanitizationMiddleware";
-import { setPostChatContextAndLoadSurvey } from "./setPostChatContextAndLoadSurvey";
+import { BroadcastService } from "@microsoft/omnichannel-chat-components";
+import { ICustomEvent } from "@microsoft/omnichannel-chat-components/lib/types/interfaces/ICustomEvent";
+import { ConversationState } from "../../../contexts/common/ConversationState";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const initWebChatComposer = (props: ILiveChatWidgetProps, chatSDK: any, state: ILiveChatWidgetContext, dispatch: Dispatch<ILiveChatWidgetAction>, setWebChatStyles: any) => {
@@ -52,11 +53,15 @@ export const initWebChatComposer = (props: ILiveChatWidgetProps, chatSDK: any, s
             if (props?.webChatContainerProps?.renderingMiddlewareProps?.hideSendboxOnConversationEnd !== false) {
                 setWebChatStyles((styles: StyleOptions) => { return { ...styles, hideSendBox: true }; });
             }
-            if (isPostChatEnabled === "true" && postChatSurveyMode === PostChatSurveyMode.Embed) {
-                dispatch({ type: LiveChatWidgetActionType.SET_SHOULD_SHOW_POST_CHAT, payload: true });
-                dispatch({ type: LiveChatWidgetActionType.SET_CONVERSATION_STATE, payload: ConversationState.Loading });
-
-                await setPostChatContextAndLoadSurvey(chatSDK, dispatch, true);
+            if (isPostChatEnabled === "true") {
+                if (postChatSurveyMode === PostChatSurveyMode.Embed) {
+                    const loadPostChatEvent: ICustomEvent = {
+                        eventName: "LoadPostChatSurvey",
+                    };
+                    BroadcastService.postMessage(loadPostChatEvent);
+                } else if (postChatSurveyMode === PostChatSurveyMode.Link) {
+                    dispatch({ type: LiveChatWidgetActionType.SET_CONVERSATION_STATE, payload: ConversationState.InActive });
+                }
             } else {
                 dispatch({ type: LiveChatWidgetActionType.SET_CONVERSATION_ENDED_BY_AGENT, payload: true });
             }

@@ -105,11 +105,15 @@ export enum TelemetryEvent {
     SendTypingIndicatorFailed = "SendTypingIndicatorFailed",
 
     PreChatSurveyStartChatMethodFailed = "PreChatSurveyStartChatMethodFailed",
+    ChatAlreadyTriggered = "ChatAlreadyTriggered",
+    StartProactiveChatEventReceived = "StartProactiveChatEventReceived",
     StartProactiveChatMethodFailed = "StartProactiveChatMethodFailed",
     ProactiveChatAccepted = "ProactiveChatAccepted",
     ProactiveChatRejected = "ProactiveChatRejected",
     IncomingProactiveChatScreenLoaded = "IncomingProactiveChatScreenLoaded",
     ProactiveChatClosed = "ProactiveChatClosed",
+    ProactiveChatStartChat = "ProactiveChatStartChat",
+    ProactiveChatStartPopoutChat = "ProactiveChatStartPopoutChat",
     ReconnectChatContinueConversation = "ReconnectChatContinueConversation",
     ReconnectChatStartNewConversation = "ReconnectChatStartNewConversation",
     ReconnectChatMinimize = "ReconnectChatMinimize",
@@ -124,7 +128,6 @@ export interface TelemetryInput {
 export class TelemetryConstants {
     private static map(eventTypeOrScenarioType: TelemetryEvent): ScenarioType {
         switch (eventTypeOrScenarioType) {
-        case TelemetryEvent.StartChatSDKCall:
         case TelemetryEvent.ParseAdaptiveCardFailed:
             return ScenarioType.CONFIG_VALIDATION;
 
@@ -163,6 +166,7 @@ export class TelemetryConstants {
         case TelemetryEvent.HeaderMinimizeButtonClicked:
             return ScenarioType.ACTIONS;
 
+        case TelemetryEvent.StartChatSDKCall:
         case TelemetryEvent.StartChatMethodException:
         case TelemetryEvent.CloseChatMethodException:
         case TelemetryEvent.StartProactiveChatMethodFailed:

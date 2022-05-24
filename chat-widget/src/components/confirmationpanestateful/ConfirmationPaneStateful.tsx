@@ -2,9 +2,7 @@ import { LogLevel, TelemetryEvent } from "../../common/telemetry/TelemetryConsta
 import React, { Dispatch, useEffect } from "react";
 import { findAllFocusableElement, findParentFocusableElementsWithoutChildContainer, preventFocusToMoveOutOfElement, setFocusOnElement, setFocusOnSendBox, setTabIndices } from "../../common/utils";
 
-import { ConfirmationPane } from "@microsoft/omnichannel-chat-components";
-import { Constants } from "../../common/Constants";
-import { ConversationState } from "../../contexts/common/ConversationState";
+import { BroadcastService, ConfirmationPane } from "@microsoft/omnichannel-chat-components";
 import { DimLayer } from "../dimlayer/DimLayer";
 import { IConfirmationPaneControlProps } from "@microsoft/omnichannel-chat-components/lib/types/components/confirmationpane/interfaces/IConfirmationPaneControlProps";
 import { IConfirmationPaneStatefulParams } from "./interfaces/IConfirmationPaneStatefulParams";
@@ -17,18 +15,22 @@ import { PostChatSurveyMode } from "../postchatsurveypanestateful/enums/PostChat
 import { TelemetryHelper } from "../../common/telemetry/TelemetryHelper";
 import useChatAdapterStore from "../../hooks/useChatAdapterStore";
 import useChatContextStore from "../../hooks/useChatContextStore";
+import { ICustomEvent } from "@microsoft/omnichannel-chat-components/lib/types/interfaces/ICustomEvent";
 import useChatSDKStore from "../../hooks/useChatSDKStore";
+import { Constants } from "../../common/Constants";
+import { ConversationState } from "../../contexts/common/ConversationState";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ConfirmationPaneStateful = (props: IConfirmationPaneStatefulParams) => {
 
     const initialTabIndexMap: Map<string, number> = new Map();
     let elements: HTMLElement[] | null = [];
-
-    const [state, dispatch]: [ILiveChatWidgetContext, Dispatch<ILiveChatWidgetAction>] = useChatContextStore();
-    const { setPostChatContext, endChat } = props;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const chatSDK: any = useChatSDKStore();
+
+    const [state, dispatch]: [ILiveChatWidgetContext, Dispatch<ILiveChatWidgetAction>] = useChatContextStore();
+    const { endChat } = props;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [adapter,]: [any, (adapter: any) => void] = useChatAdapterStore();
 
@@ -39,35 +41,29 @@ export const ConfirmationPaneStateful = (props: IConfirmationPaneStatefulParams)
         id: "oc-lcw-confirmation-pane",
         dir: state.domainStates.globalDir,
         onConfirm: async () => {
-            TelemetryHelper.logConfigDataEvent(LogLevel.INFO, {
+            TelemetryHelper.logActionEvent(LogLevel.INFO, {
                 Event: TelemetryEvent.ConfirmationConfirmButtonClicked,
                 Description: "Confirmation pane Confirm button clicked"
             });
             dispatch({ type: LiveChatWidgetActionType.SET_SHOW_CONFIRMATION, payload: false });
             try {
-                //ToDo: End Chat before PostChat Context and conversation Details is set once the getPostChatContext request ID fetch issue is fixed
+                // check agent has joined conversation
                 const conversationDetails = await chatSDK.getConversationDetails();
-                // ToDo: Replace with CanRenderPostChat once available in conversationDetails API response 
-                if (isPostChatEnabled === "true" && postChatSurveyMode === PostChatSurveyMode.Embed && conversationDetails.canRenderPostChat === Constants.truePascal) {
-                    dispatch({ type: LiveChatWidgetActionType.SET_SHOULD_SHOW_POST_CHAT, payload: true });
-                    dispatch({ type: LiveChatWidgetActionType.SET_CONVERSATION_STATE, payload: ConversationState.Loading });
-
-                    await setPostChatContext();
-                    if (state.domainStates.postChatContext) {
-                        dispatch({ type: LiveChatWidgetActionType.SET_CONVERSATION_STATE, payload: ConversationState.Postchat });
+                if (isPostChatEnabled === "true" && conversationDetails.canRenderPostChat === Constants.truePascal) {
+                    if (postChatSurveyMode === PostChatSurveyMode.Embed) {
+                        const loadPostChatEvent: ICustomEvent = {
+                            eventName: "LoadPostChatSurvey",
+                        };
+                        BroadcastService.postMessage(loadPostChatEvent);
+                    } else if (postChatSurveyMode === PostChatSurveyMode.Link) {
+                        const skipEndChatSDK = false;
+                        const skipCloseChat = true;
+                        await endChat(adapter, skipEndChatSDK, skipCloseChat);
+                        dispatch({ type: LiveChatWidgetActionType.SET_CONVERSATION_STATE, payload: ConversationState.InActive });
                     }
                 } else {
                     setTabIndices(elements, initialTabIndexMap, true);
-                    try {
-                        await endChat(adapter);
-                    } catch (error) {
-                        TelemetryHelper.logSDKEvent(LogLevel.ERROR, {
-                            Event: TelemetryEvent.CloseChatMethodException,
-                            ExceptionDetails: {
-                                exception: `Failed to endChat: ${error}`
-                            }
-                        });
-                    }
+                    await endChat(adapter);
                 }
             } catch (ex) {
                 TelemetryHelper.logSDKEvent(LogLevel.ERROR, {
@@ -80,7 +76,7 @@ export const ConfirmationPaneStateful = (props: IConfirmationPaneStatefulParams)
             }
         },
         onCancel: () => {
-            TelemetryHelper.logConfigDataEvent(LogLevel.INFO, {
+            TelemetryHelper.logActionEvent(LogLevel.INFO, {
                 Event: TelemetryEvent.ConfirmationCancelButtonClicked,
                 Description: "Confirmation pane Cancel button clicked."
             });

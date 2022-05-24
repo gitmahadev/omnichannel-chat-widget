@@ -57,8 +57,10 @@ import { startProactiveChat } from "../common/startProactiveChat";
 import useChatAdapterStore from "../../../hooks/useChatAdapterStore";
 import useChatContextStore from "../../../hooks/useChatContextStore";
 import useChatSDKStore from "../../../hooks/useChatSDKStore";
-import { TelemetryEvent } from "../../../common/telemetry/TelemetryConstants";
+import { LogLevel, TelemetryEvent } from "../../../common/telemetry/TelemetryConstants";
 import { disposeTelemetryLoggers } from "../common/disposeTelemetryLoggers";
+import { DataStoreManager } from "../../../common/contextDataStore/DataStoreManager";
+import { TelemetryHelper } from "../../../common/telemetry/TelemetryHelper";
 
 export const LiveChatWidgetStateful = (props: ILiveChatWidgetProps) => {
     const [state, dispatch]: [ILiveChatWidgetContext, Dispatch<ILiveChatWidgetAction>] = useChatContextStore();
@@ -84,7 +86,7 @@ export const LiveChatWidgetStateful = (props: ILiveChatWidgetProps) => {
     useEffect(() => {
         registerTelemetryLoggers(props, dispatch);
         createInternetConnectionChangeHandler();
-
+        DataStoreManager.clientDataStore = props.contextDataStore ?? undefined;
         dispatch({ type: LiveChatWidgetActionType.SET_WIDGET_ELEMENT_ID, payload: widgetElementId });
         dispatch({ type: LiveChatWidgetActionType.SET_SKIP_CHAT_BUTTON_RENDERING, payload: props.controlProps?.skipChatButtonRendering || false });
         initCallingSdk(chatSDK, setVoiceVideoCallingSDK)
@@ -126,8 +128,17 @@ export const LiveChatWidgetStateful = (props: ILiveChatWidgetProps) => {
 
     useEffect(() => {
         BroadcastService.getMessageByEventName("StartProactiveChat").subscribe((msg: ICustomEvent) => {
+            TelemetryHelper.logActionEvent(LogLevel.INFO, {
+                Event: TelemetryEvent.StartProactiveChatEventReceived,
+                Description: "Start proactive chat event received."
+            });
             if (canStartProactiveChat.current) {
-                startProactiveChat(dispatch, msg?.payload?.bodyTitle, msg?.payload?.showPrechat, msg?.payload?.inNewWindow);
+                startProactiveChat(dispatch, msg?.payload?.notificationConfig, msg?.payload?.enablePreChat, msg?.payload?.inNewWindow);
+            } else {
+                TelemetryHelper.logActionEvent(LogLevel.INFO, {
+                    Event: TelemetryEvent.ChatAlreadyTriggered,
+                    Description: "Start proactive chat method called, when chat was already triggered."
+                });
             }
         });
         window.addEventListener("beforeunload", (event) => {
@@ -148,7 +159,7 @@ export const LiveChatWidgetStateful = (props: ILiveChatWidgetProps) => {
         }
 
         // Track the message count
-        if (state.appStates.conversationState == ConversationState.Active) {
+        if (state.appStates.conversationState === ConversationState.Active) {
             chatSDK?.onNewMessage(() => {
                 currentMessageCountRef.current++;
                 dispatch({ type: LiveChatWidgetActionType.SET_UNREAD_MESSAGE_COUNT, payload: currentMessageCountRef.current + 1 });
@@ -188,21 +199,24 @@ export const LiveChatWidgetStateful = (props: ILiveChatWidgetProps) => {
     }, [props.webChatContainerProps?.webChatStyles]);
     
     const webChatProps = initWebChatComposer(props, chatSDK, state, dispatch, setWebChatStyles);
-    const setPostChatContextRelay = () => setPostChatContextAndLoadSurvey(chatSDK, dispatch, true);
-    const endChatRelay = () => endChat(props, chatSDK, setAdapter, setWebChatStyles, dispatch, adapter);
+    const setPostChatContextRelay = () => setPostChatContextAndLoadSurvey(chatSDK, dispatch);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const endChatRelay = (adapter: any, skipEndChatSDK: any, skipCloseChat: any) => endChat(props, chatSDK, setAdapter, setWebChatStyles, dispatch, adapter, skipEndChatSDK, skipCloseChat);
     const prepareStartChatRelay = () => prepareStartChat(props, chatSDK, state, dispatch, setAdapter);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const initStartChatRelay = (optionalParams?: any) => initStartChat(chatSDK, dispatch, setAdapter, optionalParams);
+    const initStartChatRelay = (optionalParams?: any, persistedState?: any) => initStartChat(chatSDK, dispatch, setAdapter, optionalParams, persistedState);
     const confirmationPaneProps = initConfirmationPropsComposer(props);
-    
+
     // publish chat widget state
-    const chatWidgetStateChangeEvent: ICustomEvent = {
-        eventName: TelemetryEvent.ChatWidgetStateChanged,
-        payload: {
-            ...state
-        }
-    };
-    BroadcastService.postMessage(chatWidgetStateChangeEvent);
+    useEffect(() => {
+        const chatWidgetStateChangeEvent: ICustomEvent = {
+            eventName: TelemetryEvent.ChatWidgetStateChanged,
+            payload: {
+                ...state
+            }
+        };
+        BroadcastService.postMessage(chatWidgetStateChangeEvent);
+    }, [state]);
 
     return (
         <Composer
