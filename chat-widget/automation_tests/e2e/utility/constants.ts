@@ -2,6 +2,13 @@ export enum CustomLiveChatWidgetConstants {
   CustomLiveChatWidgetFilePath = "customlivechatwidgets/CustomLiveChatWidget.html",
   LiveChatButtomId = "#oc-lcw-chat-button-title",
   DefaultTimeout = 1000,
+  CustomLCWAdaptiveCardWidgetFilePath = "customlivechatwidgets/CustomLCWAdaptiveCard.html",
+}
+
+export enum Constants {
+  Two = 2,
+  MaxTimeout = 8000,
+  DefaultTimeout = 2000
 }
 
 export const DiagnosticData = [
