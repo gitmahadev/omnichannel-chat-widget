@@ -53,6 +53,15 @@ export enum SelectorConstants {
   AdptivecardReceiptcardOrderNo = "//p[contains(text(),'1234')]",
   AdptivecardSigininCard = "button[aria-label*='Sign-in']",
   AdptivecardMoreInformation = "button[aria-label*='More information']",
+  // Normal chat selectors
+  NormalChatLoading="//div[@id='oc-lcw-loading-pane']",
+  NoramlChatContainer="//*[@id='oc-lcw']//div[contains(@class,'webchat__basic-transcript')]",
+  NoramlChatAgentWithYouMessage="//*[@id='oc-lcw']//div[contains(text(),'An agent will be with you in a moment.')]",
+  NoramlChatClose="//button[@id='oc-lcw-header-close-button']",
+  NoramlChatCloseConfirmation="//div[@id='oc-lcw-confirmation-pane']",
+  NoramlChatConfirmCancel="//button[@aria-label='Cancel. Return to Chat']",
+  NoramlChatConfirmClose="//button[@aria-label='Close Chat']",
+  NoramlChatMinimize="//button[@title='Minimize']",
 }
 
 export enum Constants {

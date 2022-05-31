@@ -384,29 +384,57 @@ export class LiveChatPage extends BasePage {
         }
     }
 
-    public async VerifyThumbnail(){
+    public async verifyThumbnail(){
         await this.Page.hover(SelectorConstants.AdptivecardThumbnailmsg);
         await this.Page.hover(SelectorConstants.AdptivecardThumbnailimg);
     }
 
-    public async NavigatetoGetstarted(){
+    public async navigatetoGetstarted(){
         await this.Page.click(SelectorConstants.AdptivecardGetstarted);
     }
 
-    public async VerifyReceiptcards(){
+    public async verifyReceiptcards(){
         await this.Page.hover(SelectorConstants.AdptivecardReceiptcardOrderNo);
 
     }
   
-    public async VerifySiginbutton(){
+    public async verifySiginbutton(){
         await this.Page.hover(SelectorConstants.AdptivecardSigininCard);
     }
 
-    public async NavigateToMoreinformation(){
+    public async navigateToMoreinformation(){
         await this.Page.click(SelectorConstants.AdptivecardMoreInformation);
     }
 
-    public async NavigatetoSiginincard(){
+    public async navigatetoSiginincard(){
         await this.Page.click(SelectorConstants.AdptivecardSigininCard);
+    }
+
+    public async validatelcwNoramlChatflow()
+    {
+        expect(await this.Page.waitForSelector(CustomLiveChatWidgetConstants.LiveChatButtomId)).toBeTruthy();
+        await this.Page.click(CustomLiveChatWidgetConstants.LiveChatButtomId);
+        expect(await this.Page.waitForSelector(SelectorConstants.NormalChatLoading)).toBeTruthy();
+        expect(await this.Page.waitForSelector(SelectorConstants.NoramlChatContainer)).toBeTruthy();
+        expect(await this.Page.waitForSelector(SelectorConstants.NoramlChatAgentWithYouMessage)).toBeTruthy();
+        expect(await this.Page.waitForSelector(SelectorConstants.BotwaitGreetMsg)).toBeTruthy();
+        await this.sendMessageforC1("hero card");
+        expect(await this.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "hero card")).toBeTruthy();
+        await this.Page.click(SelectorConstants.NoramlChatClose);
+        expect(await this.Page.waitForSelector(SelectorConstants.NoramlChatCloseConfirmation)).toBeTruthy();
+        expect(await this.Page.waitForSelector(SelectorConstants.NoramlChatConfirmCancel)).toBeTruthy();
+        await this.Page.click(SelectorConstants.NoramlChatConfirmCancel);
+        expect(await this.Page.waitForSelector(SelectorConstants.NoramlChatMinimize)).toBeTruthy();    
+        await this.Page.click(SelectorConstants.NoramlChatMinimize);
+        expect(await this.Page.waitForSelector(CustomLiveChatWidgetConstants.LiveChatButtomId)).toBeTruthy();
+        await this.Page.click(CustomLiveChatWidgetConstants.LiveChatButtomId);
+        expect(await this.Page.waitForSelector(SelectorConstants.NoramlChatClose)).toBeTruthy();    
+        await this.Page.click(SelectorConstants.NoramlChatClose);
+        expect(await this.Page.waitForSelector(SelectorConstants.NoramlChatCloseConfirmation)).toBeTruthy();
+        await this.Page.click(SelectorConstants.NoramlChatConfirmClose);
+        expect(await this.Page.waitForSelector(CustomLiveChatWidgetConstants.LiveChatButtomId)).toBeTruthy();
+        await this.Page.click(CustomLiveChatWidgetConstants.LiveChatButtomId);
+        expect(await this.Page.waitForSelector(SelectorConstants.BotwaitGreetMsg)).toBeTruthy();
     }
 }
