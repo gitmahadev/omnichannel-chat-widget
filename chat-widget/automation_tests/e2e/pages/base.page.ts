@@ -42,6 +42,11 @@ export class BasePage {
         await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
     }
 
+    public async openLiveChatAdaptiveCardWrapWidget() {
+        const path = fs.realpathSync(CustomLiveChatWidgetConstants.CustomLCWAdaptiveCardWrapWidgetFilePath);
+        await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
+    }
+
     public async waitUntilLiveChatSelectorIsVisible(
         selectorVal: string,
         maxCount = 3,

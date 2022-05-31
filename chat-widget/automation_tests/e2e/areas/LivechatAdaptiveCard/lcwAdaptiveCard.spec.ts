@@ -1,10 +1,10 @@
 import { TestSettings } from "configuration/test-settings";
-import { LiveChatPage } from "pages/livechat";
+import { LiveChatPage, LiveChatWidgetPageConstants } from "pages/livechat";
 import { testHelper } from "pages/testHelper";
-import { Browser, BrowserContext } from "playwright";
+import { BrowserContext } from "playwright";
+import { SelectorConstants } from "Utility/constants";
 
-describe("live chat button", () => {
-    // let newBrowser: Browser;
+describe("LCW Customization for adaptive cards", () => {
     let liveChatContext: BrowserContext;
     let livechatpage: LiveChatPage;
 
@@ -27,5 +27,53 @@ describe("live chat button", () => {
         livechatpage = new LiveChatPage(await liveChatContext.newPage());
         await livechatpage.openLiveChatAdaptiveCardWidget();
         await livechatpage.OpenChatWidget();
+        await livechatpage.waituntilBotMsg(SelectorConstants.BotwaitGreetMsg);
+        await livechatpage.sendMessageforC1("hero card imback");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "hero card imback")).toBeTruthy();
+        await livechatpage.sendMessageforC1("hero card");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "hero card")).toBeTruthy();
+        expect(await livechatpage.validateC1Images("hero card")).toBeTruthy();
+        expect(await livechatpage.validateC1Controls("hero card")).toBeTruthy();
+        await livechatpage.verifyLinkOpens(liveChatContext, SelectorConstants.AdaptivecardherocardNavigate, SelectorConstants.AdaptivecardheroCardLinkUrl);  
+        await livechatpage.sendMessageforC1("flight update");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "flight update")).toBeTruthy();
+        expect(await livechatpage.validateC1Images("flight update")).toBeTruthy();
+        expect(await livechatpage.validateC1Controls("flight update")).toBeTruthy();
+        await livechatpage.sendMessageforC1("activity update");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "activity update")).toBeTruthy();
+        expect(await livechatpage.validateC1Controls("activity update")).toBeTruthy();
+        await livechatpage.setduedateforAdaptivecardActivityUpdate();
+        await livechatpage.verifyLinkOpens(liveChatContext, SelectorConstants.AdaptivecardActivityUpdateNavigate, SelectorConstants.AdaptivecardActivityUpdatelinkUrl);  
+        await livechatpage.sendMessageforC1("adaptive card show action");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "adaptive card show action")).toBeTruthy();
+        expect(await livechatpage.validateC1Controls("adaptive card show action")).toBeTruthy();
+        await livechatpage.validateAdaptiveCardPopupOption();
+        await livechatpage.sendMessageforC1("adaptive card openurl action");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "adaptive card openurl action")).toBeTruthy();
+        expect(await livechatpage.validateC1Images("adaptive card openurl action")).toBeTruthy();
+        await livechatpage.verifyLinkOpens(liveChatContext, SelectorConstants.AdaptivecardOpenurlActionNavigate, SelectorConstants.AdaptivecardOpenurl);  
+        await livechatpage.sendMessageforC1("adaptive card submit action");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "adaptive card submit action")).toBeTruthy();
+        await livechatpage.validateAdaptiveCardSubmitform();
+        await livechatpage.sendMessageforC1("inputs");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "inputs")).toBeTruthy();
+        await livechatpage.validateAdaptiveCardInputSubmitform();
+        await livechatpage.sendMessageforC1("flight itinerary");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "flight itinerary")).toBeTruthy();
+        expect(await livechatpage.validateC1Controls("flight itinerary")).toBeTruthy();
+        await livechatpage.sendMessageforC1("adaptive card toggle action");
+        expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
+            "adaptive card toggle action")).toBeTruthy();
+        expect(await livechatpage.validateC1Controls("adaptive card toggle action")).toBeTruthy();
+        await livechatpage.closePage();
     });
 });
