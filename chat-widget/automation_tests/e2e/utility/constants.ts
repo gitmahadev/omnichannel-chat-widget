@@ -42,6 +42,17 @@ export enum SelectorConstants {
   AdaptivecardInputSubmitbutton="//*[@class='webchat__bubble__content']//div[@class='ac-container ac-adaptiveCard']//p[contains(text(),'Input.Text elements')]/following::button[@aria-label='Submit']",
   AdaptivecardFlightUpdate="//*[@class='webchat__bubble__content']//div[@class='ac-container ac-adaptiveCard']//p[text()='Passengers']",
   AdaptivecardToggle="//*[@class='webchat__bubble__content']//div[@class='ac-container ac-adaptiveCard']//following::button[@aria-label='Toggle!']",
+
+  AdptivecardMsgAudio = "//div[@class='ac-textBlock']",
+  AdptivecardMsgThumbnailCard ="//div[@class='ac-textBlock']",
+  AdptivecardSigninCardMsg = "//div[contains(@class,'ac-container ac-adaptiveCard')]",
+  AdptivecardMsgReceiptCard = "//div[@class='ac-textBlock']",
+  AdptivecardThumbnailmsg = "//p[contains(text(),'Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')]",
+  AdptivecardThumbnailimg = "//div[@class='ac-textBlock']/following::img[last()]",
+  AdptivecardGetstarted = "button[aria-label*='Get Started']",
+  AdptivecardReceiptcardOrderNo = "//p[contains(text(),'1234')]",
+  AdptivecardSigininCard = "button[aria-label*='Sign-in']",
+  AdptivecardMoreInformation = "button[aria-label*='More information']",
 }
 
 export enum Constants {

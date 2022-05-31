@@ -15,16 +15,21 @@ export const LiveChatWidgetPageConstants = {
 
 export enum LiveChatMessageConstants {
     AutoCloseMessageXpaths = "//p[contains(text(),'The session has paused due to inactivity. Please reply to continue this chat.')]",
+    BotwaitGreetMsg = "//p[contains(text(),'Hi Customer! This is your Omnichannel Test Bot 🤖')]",
 }
 
 export enum LiveChatConstants {
     AdaptiveCardHerocard = "hero card",
     AdaptiveCardFlightcard = "flight update",
-    AdaptiveCardActivityUpdate="activity update",
-    AdaptiveCardShowAction="adaptive card show action",
-    AdaptiveCardAdaptiveOpenurl="adaptive card openurl action",
-    AdaptivecardFlightItinerary="flight itinerary",
-    AdaptivecardToggleAction="adaptive card toggle action",
+    AdaptiveCardActivityUpdate = "activity update",
+    AdaptiveCardShowAction = "adaptive card show action",
+    AdaptiveCardAdaptiveOpenurl = "adaptive card openurl action",
+    AdaptivecardFlightItinerary = "flight itinerary",
+    AdaptivecardToggleAction = "adaptive card toggle action",
+    AdaptivecardAudio = "Audio Card",
+    AdaptivecardReceipt = "Receipt Card",
+    AdaptivecardThumbnail = "Thumbnail Card",
+    AdaptivecardSigninCard = "signin card",
 }
 
 export class LiveChatPage extends BasePage {
@@ -280,25 +285,23 @@ export class LiveChatPage extends BasePage {
         }
     }
 
-    public async setduedateforAdaptivecardActivityUpdate(){
+    public async setduedateforAdaptivecardActivityUpdate() {
         await this.Page.waitForSelector(SelectorConstants.AdaptivecardActivityUpdateSetduedate);
         await this.Page.click(SelectorConstants.AdaptivecardActivityUpdateSetduedate);
         await this.fillInputDate();
         await this.Page.click(SelectorConstants.AdaptivecardActivityUpdateSetduedateOk);
     }
 
-    public async fillInputDate()
-    {
+    public async fillInputDate() {
         const today = new Date();
         const dd = String(today.getDate());
-        const mm = String(today.getMonth() +1 );
+        const mm = String(today.getMonth() + 1);
         const yyyy = String(today.getFullYear());
         const todaysDate = (dd + "-0" + mm + "-" + yyyy).toString();
         await this.Page.type("[type=date]", todaysDate);
     }
 
-    public async fillInputTime()
-    {
+    public async fillInputTime() {
         const today = new Date();
         const time = String(today.getTime());
         await this.Page.type("[type=time]", time);
@@ -320,13 +323,13 @@ export class LiveChatPage extends BasePage {
         expect(allPages[allPages.length - 1].url()).toMatch(new RegExp(linkUrl));
     }
 
-    public async validateAdaptiveCardPopupOption(){
+    public async validateAdaptiveCardPopupOption() {
         await this.Page.waitForSelector(SelectorConstants.AdaptivecardShowActionMsg);
         await this.Page.click(SelectorConstants.AdaptivecardShowActionMsg);
         expect(await this.Page.waitForSelector(SelectorConstants.AdaptivecardShowActionPopup)).toBeTruthy();
     }
 
-    public async validateAdaptiveCardSubmitform(){
+    public async validateAdaptiveCardSubmitform() {
         await this.Page.waitForSelector(SelectorConstants.AdaptivecardSubmitName);
         await this.Page.fill(SelectorConstants.AdaptivecardSubmitName, "Microsoft");
         await this.Page.waitForSelector(SelectorConstants.AdaptivecardSubmitEmail);
@@ -334,15 +337,76 @@ export class LiveChatPage extends BasePage {
         await this.Page.click(SelectorConstants.AdaptivecardSubmitbutton);
     }
 
-    public async validateAdaptiveCardInputSubmitform(){
+    public async validateAdaptiveCardInputSubmitform() {
         await this.Page.waitForSelector(SelectorConstants.AdaptivecardInputName);
         await this.Page.fill(SelectorConstants.AdaptivecardInputName, "Microsoft");
         await this.fillInputTime();
-        const selectElement =await this.Page.waitForSelector(SelectorConstants.AdaptivecardInputSelect);
+        const selectElement = await this.Page.waitForSelector(SelectorConstants.AdaptivecardInputSelect);
         await this.Page.click(SelectorConstants.AdaptivecardInputSelect);
-        selectElement.selectOption({label: Constants.Green.toString(),});
+        selectElement.selectOption({ label: Constants.Green.toString(), });
         await this.Page.click(SelectorConstants.AdaptivecardInputRadioButton);
         await this.Page.click(SelectorConstants.AdaptivecardInputCheckbox);
         await this.Page.click(SelectorConstants.AdaptivecardInputSubmitbutton);
+    }
+
+    public static async sendAdaptiveCardMessageandresponse(liveChatPage: LiveChatPage,
+        adaptiveCardMessage: string) {
+        await liveChatPage.sendMessageforC1(adaptiveCardMessage);
+    }
+
+    public async validateAdaptiveCardResponse(triggerPhrase: string) {
+        await this.Page.$(
+            SelectorConstants.liveChatiframeName
+        );
+        //Timeout is required as bot taking time to load.
+        switch (triggerPhrase) {
+        case LiveChatConstants.AdaptivecardAudio: {
+            return await this.Page.waitForSelector(
+                SelectorConstants.AdptivecardMsgAudio
+            );
+        }
+        case LiveChatConstants.AdaptivecardReceipt: {
+            return await this.Page.waitForSelector(
+                SelectorConstants.AdptivecardMsgReceiptCard
+            );
+        }
+        case LiveChatConstants.AdaptivecardThumbnail: {
+            return await this.Page.waitForSelector(
+                SelectorConstants.AdptivecardMsgThumbnailCard
+            );
+        }
+        case LiveChatConstants.AdaptivecardSigninCard: {
+            return await this.Page.waitForSelector(
+                SelectorConstants.AdptivecardSigninCardMsg
+            );
+        }
+        default: throw new Error(`'${triggerPhrase}' does not match an expected trigger phrase`);
+        }
+    }
+
+    public async VerifyThumbnail(){
+        await this.Page.hover(SelectorConstants.AdptivecardThumbnailmsg);
+        await this.Page.hover(SelectorConstants.AdptivecardThumbnailimg);
+    }
+
+    public async NavigatetoGetstarted(){
+        await this.Page.click(SelectorConstants.AdptivecardGetstarted);
+    }
+
+    public async VerifyReceiptcards(){
+        await this.Page.hover(SelectorConstants.AdptivecardReceiptcardOrderNo);
+
+    }
+  
+    public async VerifySiginbutton(){
+        await this.Page.hover(SelectorConstants.AdptivecardSigininCard);
+    }
+
+    public async NavigateToMoreinformation(){
+        await this.Page.click(SelectorConstants.AdptivecardMoreInformation);
+    }
+
+    public async NavigatetoSiginincard(){
+        await this.Page.click(SelectorConstants.AdptivecardSigininCard);
     }
 }

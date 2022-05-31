@@ -1,8 +1,8 @@
 import { TestSettings } from "configuration/test-settings";
-import { LiveChatPage, LiveChatWidgetPageConstants } from "pages/livechat";
+import { LiveChatConstants, LiveChatPage, LiveChatWidgetPageConstants } from "pages/livechat";
 import { testHelper } from "pages/testHelper";
 import { BrowserContext } from "playwright";
-import { SelectorConstants } from "Utility/constants";
+import { CustomLiveChatWidgetConstants, SelectorConstants } from "Utility/constants";
 
 describe("LCW Customization for adaptive cards", () => {
     let liveChatContext: BrowserContext;
@@ -36,7 +36,7 @@ describe("LCW Customization for adaptive cards", () => {
             "hero card")).toBeTruthy();
         expect(await livechatpage.validateC1Images("hero card")).toBeTruthy();
         expect(await livechatpage.validateC1Controls("hero card")).toBeTruthy();
-        await livechatpage.verifyLinkOpens(liveChatContext, SelectorConstants.AdaptivecardherocardNavigate, SelectorConstants.AdaptivecardheroCardLinkUrl);  
+        await livechatpage.verifyLinkOpens(liveChatContext, SelectorConstants.AdaptivecardherocardNavigate, SelectorConstants.AdaptivecardheroCardLinkUrl);
         await livechatpage.sendMessageforC1("flight update");
         expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
             "flight update")).toBeTruthy();
@@ -47,7 +47,7 @@ describe("LCW Customization for adaptive cards", () => {
             "activity update")).toBeTruthy();
         expect(await livechatpage.validateC1Controls("activity update")).toBeTruthy();
         await livechatpage.setduedateforAdaptivecardActivityUpdate();
-        await livechatpage.verifyLinkOpens(liveChatContext, SelectorConstants.AdaptivecardActivityUpdateNavigate, SelectorConstants.AdaptivecardActivityUpdatelinkUrl);  
+        await livechatpage.verifyLinkOpens(liveChatContext, SelectorConstants.AdaptivecardActivityUpdateNavigate, SelectorConstants.AdaptivecardActivityUpdatelinkUrl);
         await livechatpage.sendMessageforC1("adaptive card show action");
         expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
             "adaptive card show action")).toBeTruthy();
@@ -57,7 +57,7 @@ describe("LCW Customization for adaptive cards", () => {
         expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
             "adaptive card openurl action")).toBeTruthy();
         expect(await livechatpage.validateC1Images("adaptive card openurl action")).toBeTruthy();
-        await livechatpage.verifyLinkOpens(liveChatContext, SelectorConstants.AdaptivecardOpenurlActionNavigate, SelectorConstants.AdaptivecardOpenurl);  
+        await livechatpage.verifyLinkOpens(liveChatContext, SelectorConstants.AdaptivecardOpenurlActionNavigate, SelectorConstants.AdaptivecardOpenurl);
         await livechatpage.sendMessageforC1("adaptive card submit action");
         expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
             "adaptive card submit action")).toBeTruthy();
@@ -74,6 +74,34 @@ describe("LCW Customization for adaptive cards", () => {
         expect(await livechatpage.validateC1Messages(LiveChatWidgetPageConstants.BotMessagesXpathMessage,
             "adaptive card toggle action")).toBeTruthy();
         expect(await livechatpage.validateC1Controls("adaptive card toggle action")).toBeTruthy();
+        await livechatpage.closePage();
+    });
+
+    /// <summary>
+    /// Test Case 2698900: [LCW Customization] [Adaptive Cards] Verify customer getting appropriate Audio cards, Video cards, Thumbnail cards,Receipt,Animation cards and Signin cards
+    /// Test case link: https://dev.azure.com/dynamicscrm/OneCRM/_workitems/edit/2698900
+    /// </summary>
+    it.only("2698900: [LCW Customization] [Adaptive Cards] Verify customer getting appropriate Audio cards, Video cards, Thumbnail cards,Receipt,Animation cards and Signin cards", async () => {
+        livechatpage = new LiveChatPage(await liveChatContext.newPage());
+        await livechatpage.openLiveChatAdaptiveCardWidget();
+        await livechatpage.OpenChatWidget();
+        await livechatpage.waitUntilLiveChatSelectorIsVisible(
+            CustomLiveChatWidgetConstants.LiveChatButtomId
+        );
+        await LiveChatPage.sendAdaptiveCardMessageandresponse(livechatpage, LiveChatConstants.AdaptivecardAudio);
+        expect(await livechatpage.validateAdaptiveCardResponse(LiveChatConstants.AdaptivecardAudio)).toBeTruthy();
+        await LiveChatPage.sendAdaptiveCardMessageandresponse(livechatpage, LiveChatConstants.AdaptivecardThumbnail);
+        expect(await livechatpage.validateAdaptiveCardResponse(LiveChatConstants.AdaptivecardThumbnail)).toBeTruthy();
+        await livechatpage.VerifyThumbnail();
+        await livechatpage.NavigatetoGetstarted();
+        await LiveChatPage.sendAdaptiveCardMessageandresponse(livechatpage, LiveChatConstants.AdaptivecardReceipt);
+        expect(await livechatpage.validateAdaptiveCardResponse(LiveChatConstants.AdaptivecardReceipt)).toBeTruthy();
+        await livechatpage.VerifyReceiptcards();
+        await livechatpage.NavigateToMoreinformation();
+        await LiveChatPage.sendAdaptiveCardMessageandresponse(livechatpage, LiveChatConstants.AdaptivecardSigninCard);
+        expect(await livechatpage.validateAdaptiveCardResponse(LiveChatConstants.AdaptivecardSigninCard)).toBeTruthy();
+        await livechatpage.VerifySiginbutton();
+        await livechatpage.NavigatetoSiginincard();
         await livechatpage.closePage();
     });
 });
