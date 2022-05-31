@@ -437,4 +437,12 @@ export class LiveChatPage extends BasePage {
         await this.Page.click(CustomLiveChatWidgetConstants.LiveChatButtomId);
         expect(await this.Page.waitForSelector(SelectorConstants.BotwaitGreetMsg)).toBeTruthy();
     }
+
+    public async validateSpecialSymbolMessages(text: string,selector:string) {
+        const replymsg=await this.Page.waitForSelector(selector);
+        const ItemText = await replymsg.innerText();
+        if (ItemText.includes(text)) {
+            return true;
+        }
+    }
 }

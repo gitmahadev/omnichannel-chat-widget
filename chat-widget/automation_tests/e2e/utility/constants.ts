@@ -62,6 +62,8 @@ export enum SelectorConstants {
   NoramlChatConfirmCancel="//button[@aria-label='Cancel. Return to Chat']",
   NoramlChatConfirmClose="//button[@aria-label='Close Chat']",
   NoramlChatMinimize="//button[@title='Minimize']",
+  SpecialSymbolAsteriskMsg="//*[@id='oc-lcw']//div[text()='You said:']/following::div[@class='webchat__bubble__content']//p[text()='*Hi']/following::div[text()='Bot WC said:']/following::p[contains(text(),'*Hi')]",
+  SpecialSymbolPoundMsg="//*[@id='oc-lcw']//div[text()='You said:']/following::div[@class='webchat__bubble__content']//p[text()='#Hi']/following::div[text()='Bot WC said:']/following::p[contains(text(),'#Hi')]",
 }
 
 export enum Constants {
