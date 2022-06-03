@@ -47,6 +47,16 @@ export class BasePage {
         await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
     }
 
+    public async openLiveChatAttachmentwithPrechatWidget() {
+        const path = fs.realpathSync(CustomLiveChatWidgetConstants.CustomLCWAttachmentPrechatWidgetFilePath);
+        await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
+    }
+
+    public async openLiveChatBotWidget() {
+        const path = fs.realpathSync(CustomLiveChatWidgetConstants.CustomLCWBotWidgetFilePath);
+        await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
+    }
+
     public async waitUntilLiveChatSelectorIsVisible(
         selectorVal: string,
         maxCount = 3,

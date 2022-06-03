@@ -321,6 +321,7 @@ export class LiveChatPage extends BasePage {
         const allPages = liveChatContext.pages();
         expect(allPages.length - pagesBeforeClickCount).toBe(1);
         expect(allPages[allPages.length - 1].url()).toMatch(new RegExp(linkUrl));
+        return true;  
     }
 
     public async validateAdaptiveCardPopupOption() {

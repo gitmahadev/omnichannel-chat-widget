@@ -5,6 +5,8 @@ export enum CustomLiveChatWidgetConstants {
   DefaultTimeout = 1000,
   CustomLCWAdaptiveCardWidgetFilePath = "customlivechatwidgets/CustomLCWAdaptiveCard.html",
   CustomLCWAdaptiveCardWrapWidgetFilePath = "customlivechatwidgets/CustomLCWAdaptiveCardWrap.html",
+  CustomLCWAttachmentPrechatWidgetFilePath = "customlivechatwidgets/CustomLcwAttachementPreChatWidget.html",
+  CustomLCWBotWidgetFilePath = "customlivechatwidgets/CustomeLCWBotChatWidget.html",
 }
 
 export enum SelectorConstants {
@@ -64,6 +66,8 @@ export enum SelectorConstants {
   NoramlChatMinimize="//button[@title='Minimize']",
   SpecialSymbolAsteriskMsg="//*[@id='oc-lcw']//div[text()='You said:']/following::div[@class='webchat__bubble__content']//p[text()='*Hi']/following::div[text()='Bot WC said:']/following::p[contains(text(),'*Hi')]",
   SpecialSymbolPoundMsg="//*[@id='oc-lcw']//div[text()='You said:']/following::div[@class='webchat__bubble__content']//p[text()='#Hi']/following::div[text()='Bot WC said:']/following::p[contains(text(),'#Hi')]",
+  BotwaitGreetMsgwithHTMLLink = "https://www.microsoft.com/en-in/",
+  BotMessageExternalLink="//a[@title='Opens in a new window; external.']"
 }
 
 export enum Constants {
