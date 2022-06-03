@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Live Chat Widget</title>
+</head>
+
+<body style="margin: 0">
+  <script>
+    function lcw() {
+      return {
+        styleProps: {
+          generalStyles: {
+            width: "360px",
+            height: "560px",
+            bottom: "20px",
+            right: "20px"
+          }
+        },
+        chatButtonProps: {
+          styleProps: {
+            generalStyleProps: {
+              position: "absolute"
+            }
+          }
+        }
+      }
+    }
+
+    function setData(key, data, type) {
+      try {
+        if (type === "localStorage") {
+          localStorage.setItem(key, value);
+        } else {
+          sessionStorage.setItem(key, value);
+        }
+      } catch (error) {
+        console.error("logging to first party failed!")
+      }
+    }
+
+    function getData(key, type) {
+      if (type == "localStorage") {
+        localStorage.getItem(key);
+      } else {
+        sessionStorage.getItem(key);
+      }
+    }
+  </script>
+  <div id="oc-lcw-container" style="width: 370px; height: 100%; position: fixed; right: 0; bottom: 0"></div>
+  <script src="https://oc-cdn-ocdailym.azureedge.net/livechatwidget/scripts/LiveChatBootstrapper.js" 
+  id="Microsoft_Omnichannel_LCWidget" data-org-id="07609a4c-3a46-483e-bb3d-817974ce8e8f" 
+  data-app-id="8d41a756-499f-438f-9e68-c2b1d6af4bef" data-org-url="https://unq07609a4c3a46483ebb3d817974ce8-crm.oc.crmlivetie.com" 
+  data-lcw-version="test" data-suggested-action-layout="stacked"></script>
+</body>
+</html>
