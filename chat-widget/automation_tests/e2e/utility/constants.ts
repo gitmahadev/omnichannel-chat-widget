@@ -16,7 +16,7 @@ export enum SelectorConstants {
   AdaptiveCardWrapButton2="//*[@class='webchat__bubble__content']//div[@class='ac-container ac-adaptiveCard']//button[2]",
   AdaptiveCardNoEllipsis="//div[@class='webchat__bubble__content']",
   AdaptiveCardMsgWrap="//*[@class='webchat__bubble__content']//div[@class='ac-container ac-adaptiveCard']//button[contains(@aria-label,'How much')]",
-  liveChatiframeName = "//iframe[@id='Microsoft_Omnichannel_LCWidget_Chat_Iframe_Window']",
+  LiveChatiframeName = "//iframe[@id='Microsoft_Omnichannel_LCWidget_Chat_Iframe_Window']",
   Letschat = "#oclcw-chatButton",
   AdaptivecardherocardImage="//div[@class='webchat__bubble__content']//p[text()='hero card']/following::img[@class='ac-image']",
   AdaptivecardherocardNavigate="//div[@class='webchat__bubble__content']//p[text()='hero card']/following::button[@aria-label='Get Started']",
@@ -67,19 +67,42 @@ export enum SelectorConstants {
   SpecialSymbolAsteriskMsg="//*[@id='oc-lcw']//div[text()='You said:']/following::div[@class='webchat__bubble__content']//p[text()='*Hi']/following::div[text()='Bot WC said:']/following::p[contains(text(),'*Hi')]",
   SpecialSymbolPoundMsg="//*[@id='oc-lcw']//div[text()='You said:']/following::div[@class='webchat__bubble__content']//p[text()='#Hi']/following::div[text()='Bot WC said:']/following::p[contains(text(),'#Hi')]",
   BotwaitGreetMsgwithHTMLLink = "https://www.microsoft.com/en-in/",
-  BotMessageExternalLink="//a[@title='Opens in a new window; external.']"
+  BotMessageExternalLink="//a[@title='Opens in a new window; external.']",
+  
+   //File attachment selctors
+   PrechatSurveyInput="//input[@aria-label='* Omnichannelsurvey']",
+   PrechatSurveySubmit="//button[@aria-label='Submit']",
+   UploadFile = "//*[@id='webchat']/div/div[5]/div/div/input|//button[@title='Upload file']/preceding::input[1]",
+   SendButton = "//button[contains(@title, 'Send')]",
+   UploadedFilename="//div[@class='webchat__fileContent__fileName']",
+   FileUpload="Fileupload.pdf",
+   IframelcwAttachement="//iframe[@id='Microsoft_Omnichannel_AMSClient_Iframe_Window']",
+   ImagePreview="//div[@aria-roledescription='attachment']//following::img",
+   UnsupportedFileTypeMsg="//div[contains(text(),'files are not supported.')]",
+   LimitExceedsMsg="//div[contains(text(),'File exceeds the allowed limit')]",
 }
 
+
 export enum Constants {
-  Two = 2,
-  Three = 3,
-  Five = 5,
-  MaxTimeout = 8000,
-  DefaultTimeout = 2000,
-  OpenWsWaitTimeout = 10000,
-  DomContentLoaded = "domcontentloaded",
-  EnterKey = "Enter",
-  Green = "Green",
+    Two = 2,
+    Three = 3,
+    Five = 5,
+    MaxTimeout = 8000,
+    DefaultTimeout = 2000,
+    OpenWsWaitTimeout = 10000,
+    DomContentLoaded = "domcontentloaded",
+    EnterKey = "Enter",
+    Green = "Green",
+    PoundMessage = "#Hi",
+    AsteriskMessage = "*Hi",
+    MessagetoAgent = "Hi Agent",
+    PDFFile = "FileResources//Fileupload.pdf",
+    PNGFile = "FileResources//SmallSizeImageAttachment.png",
+    JPGFile = "FileResources//testFile.jpg",
+    LargePNGFile="FileResources//LargeSizeImageAttachment.png",
+    UnsupportedFile="FileResources//testFile.dll",
+    UnsupportedFileSizeMessage="File exceeds the allowed limit",
+    UnsupportedFileTypeMessage="files are not supported",
 }
 
 export const DiagnosticData = [

@@ -1,6 +1,5 @@
 import { Page } from "playwright";
 import fs from "fs";
-import { TestSettings } from "../../configuration/test-settings";
 import { CustomLiveChatWidgetConstants } from "e2e/utility/constants";
 
 export class BasePage {
@@ -32,31 +31,11 @@ export class BasePage {
         );
     }
 
-    public async openLiveChatWidget() {
-        const path = fs.realpathSync(CustomLiveChatWidgetConstants.CustomLiveChatWidgetFilePath);
+    public async openLiveChatWidget(filePath: string) {
+        const path = fs.realpathSync(filePath);
         await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
     }
-
-    public async openLiveChatAdaptiveCardWidget() {
-        const path = fs.realpathSync(CustomLiveChatWidgetConstants.CustomLCWAdaptiveCardWidgetFilePath);
-        await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
-    }
-
-    public async openLiveChatAdaptiveCardWrapWidget() {
-        const path = fs.realpathSync(CustomLiveChatWidgetConstants.CustomLCWAdaptiveCardWrapWidgetFilePath);
-        await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
-    }
-
-    public async openLiveChatAttachmentwithPrechatWidget() {
-        const path = fs.realpathSync(CustomLiveChatWidgetConstants.CustomLCWAttachmentPrechatWidgetFilePath);
-        await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
-    }
-
-    public async openLiveChatBotWidget() {
-        const path = fs.realpathSync(CustomLiveChatWidgetConstants.CustomLCWBotWidgetFilePath);
-        await this.Page.goto("file://" + path, { waitUntil: "domcontentloaded" });
-    }
-
+    
     public async waitUntilLiveChatSelectorIsVisible(
         selectorVal: string,
         maxCount = 3,

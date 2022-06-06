@@ -1,7 +1,8 @@
 import { TestSettings } from "configuration/test-settings";
-import { LiveChatPage } from "pages/livechat";
+import { LiveChatConstants, LiveChatPage } from "pages/livechat";
 import { testHelper } from "pages/testHelper";
 import { BrowserContext } from "playwright";
+import { CustomLiveChatWidgetConstants } from "Utility/constants";
 
 describe("LCW Customization for adaptive cards", () => {
     let liveChatContext: BrowserContext;
@@ -20,13 +21,12 @@ describe("LCW Customization for adaptive cards", () => {
 
     ///<summary>
     /// Test Case 2698923: [LCW Customization] [Adaptive Cards] Verify long text multiple choice questions messages wrap around the adaptive card push buttons
-    /// Test case link: https://dynamicscrm.visualstudio.com/OneCRM/_workitems/edit/2698923
     /// </summary>
     it("2698923: [LCW Customization] [Adaptive Cards] Verify long text multiple choice questions messages wrap around the adaptive card push buttons", async () => {
         livechatpage = new LiveChatPage(await liveChatContext.newPage());
-        await livechatpage.openLiveChatAdaptiveCardWrapWidget();
+        await livechatpage.openLiveChatWidget(CustomLiveChatWidgetConstants.CustomLCWAdaptiveCardWrapWidgetFilePath);
         await livechatpage.OpeniframeLiveChat();
-        await livechatpage.sendMessage("Adaptive Card Button Wrap");
+        await livechatpage.sendMessage(LiveChatConstants.AdaptivecardButtonWrap);
         expect(await livechatpage.validateAdaptiveCardMsgWrap()).toBeTruthy();
         livechatpage.closePage();
     });
