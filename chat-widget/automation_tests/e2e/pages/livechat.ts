@@ -1,7 +1,7 @@
 import { BrowserContext, Page } from "playwright";
 import { Constants, CustomLiveChatWidgetConstants, SelectorConstants } from "Utility/constants";
 import { BasePage } from "./base.page";
-import { TimeoutConstants } from "./timeout-constants";
+import { DefaultTimeoutConstants, TimeoutConstants } from "./timeout-constants";
 
 export const LCWConstants = {
     SendButtonXPathBlob:
@@ -42,7 +42,7 @@ export class LiveChatPage extends BasePage {
         super(page);
     }
 
-    public async waitUntilSelectorIsVisible(selectorVal: string, maxCount = 3, page: Page = null, timeout: number = Constants.DefaultTimeout) {
+    public async waitUntilSelectorIsVisible(selectorVal: string, maxCount = 3, page: Page = null, timeout: number = TimeoutConstants.DefaultTimeout) {
         let dataCount = 0;
         const pageObject = page ?? this.Page;
         while (dataCount < maxCount) {
@@ -61,14 +61,14 @@ export class LiveChatPage extends BasePage {
     }
 
     public async OpenChatWidget() {
-        await this.waitUntilSelectorIsVisible(CustomLiveChatWidgetConstants.LiveChatButtomId, Constants.Two, this._page, Constants.MaxTimeout);
+        await this.waitUntilSelectorIsVisible(CustomLiveChatWidgetConstants.LiveChatButtomId, Constants.Two, this._page, TimeoutConstants.MaxTimeout);
         await this.Page.click(CustomLiveChatWidgetConstants.LiveChatButtomId);
-        await this._page.waitForTimeout(Constants.DefaultTimeout);
+        await this._page.waitForTimeout(TimeoutConstants.DefaultTimeout);
     }
 
     public async waitUntilChatWidgetIsVisible(
         maxCount: number = Constants.Three,
-        timeout: number = Constants.DefaultTimeout
+        timeout: number = TimeoutConstants.DefaultTimeout
     ) {
         let dataCount = 0;
         while (dataCount < maxCount) {
@@ -95,11 +95,11 @@ export class LiveChatPage extends BasePage {
             SelectorConstants.LiveChatiframeName,
             Constants.Three,
             null,
-            Constants.MaxTimeout
+            TimeoutConstants.MaxTimeout
         );
         await this.waitUntilChatWidgetIsVisible(
             Constants.Three,
-            Constants.MaxTimeout
+            TimeoutConstants.MaxTimeout
         );
         const liveChatiframeName = await this.Page.$(
             SelectorConstants.LiveChatiframeName
@@ -143,7 +143,7 @@ export class LiveChatPage extends BasePage {
             SelectorConstants.LiveChatiframeName,
             Constants.Three,
             null,
-            Constants.OpenWsWaitTimeout
+            TimeoutConstants.OpenWsWaitTimeout
         );
         const liveChatiframeName = await this.Page.$(
             SelectorConstants.LiveChatiframeName
@@ -156,13 +156,13 @@ export class LiveChatPage extends BasePage {
         await this.waitForDomContentLoaded();
         await textArea.fill(message);
         await this.Page.keyboard.press(Constants.EnterKey, {
-            delay: TimeoutConstants.Default,
+            delay: DefaultTimeoutConstants.Default,
         });
         await this.waitUntilFrameIsVisible(
             sendXPath,
             Constants.Five,
             iFrame,
-            Constants.DefaultTimeout
+            TimeoutConstants.DefaultTimeout
         );
         await Promise.all([
             iFrame.$eval(sendXPath, (el) => (el as HTMLElement).click()),
@@ -183,7 +183,7 @@ export class LiveChatPage extends BasePage {
         let dataCount = 0;
         while (dataCount < maxCount) {
             try {
-                await this.Page.waitForTimeout(Constants.DefaultTimeout);
+                await this.Page.waitForTimeout(TimeoutConstants.DefaultTimeout);
                 await this.Page.waitForSelector(botmessage);
                 return true;
             } catch {
@@ -209,7 +209,7 @@ export class LiveChatPage extends BasePage {
                 (el as HTMLElement).click()
             ),
         ]);
-        await this._page.waitForTimeout(Constants.DefaultTimeout);
+        await this._page.waitForTimeout(TimeoutConstants.DefaultTimeout);
     }
 
     public async validateC1Messages(messageXpath: string, text: string) {
@@ -479,12 +479,22 @@ export class LiveChatPage extends BasePage {
             return true;
         }
     }
-
-    public async validateUnsupportedFiletTypeandSize(text:string,selector:string){
-        const filecontrol= await this.Page.waitForSelector(selector);
-        const filetext=await filecontrol.textContent();
-        if(filetext.includes(text)){
+    
+    public async validateSelectorMessages(text:string,selector:string){
+        const control= await this.Page.waitForSelector(selector);
+        const selectortext=await control.textContent();
+        if(selectortext.includes(text)){
             return true;
         }
+    }
+
+    public async submitPrechatSurvey(){
+        await this.Page.waitForSelector(SelectorConstants.PrechatSurveySubmit);
+        await this.Page.click(SelectorConstants.PrechatSurveySubmit);
+    }
+
+    public async validateBlankPrechatSurveyQuestions(selector:string) {
+        const text= await this.validateSelectorMessages(Constants.PrechatBlankFieldMessage,selector);
+        return text;
     }
 }

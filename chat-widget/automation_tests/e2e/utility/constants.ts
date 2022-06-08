@@ -2,11 +2,11 @@ export enum CustomLiveChatWidgetConstants {
   CustomLiveChatWidgetFilePath = "customlivechatwidgets/CustomLiveChatWidget.html",
   LiveChatButtomId = "#oc-lcw-chat-button-title",
   LivechatButton="//div[@class='oclcw-t1']",
-  DefaultTimeout = 1000,
   CustomLCWAdaptiveCardWidgetFilePath = "customlivechatwidgets/CustomLCWAdaptiveCard.html",
   CustomLCWAdaptiveCardWrapWidgetFilePath = "customlivechatwidgets/CustomLCWAdaptiveCardWrap.html",
   CustomLCWAttachmentPrechatWidgetFilePath = "customlivechatwidgets/CustomLcwAttachementPreChatWidget.html",
   CustomLCWBotWidgetFilePath = "customlivechatwidgets/CustomeLCWBotChatWidget.html",
+  CustomLCWPrechatWidgetFilePath = "customlivechatwidgets/CustomLCWPreChatWidget.html",
 }
 
 export enum SelectorConstants {
@@ -80,6 +80,9 @@ export enum SelectorConstants {
    ImagePreview="//div[@aria-roledescription='attachment']//following::img",
    UnsupportedFileTypeMsg="//div[contains(text(),'files are not supported.')]",
    LimitExceedsMsg="//div[contains(text(),'File exceeds the allowed limit')]",
+   EmptyFileMsg="//div[@aria-label='Notification']/div[contains(text(),'empty')]",
+   PrechatNameErrorMessage="//div[contains(text(),'Name field is required')]",
+   PrechatConsentErrorMessage="//div[contains(text(),'Consent field is required')]",
 }
 
 
@@ -87,9 +90,6 @@ export enum Constants {
     Two = 2,
     Three = 3,
     Five = 5,
-    MaxTimeout = 8000,
-    DefaultTimeout = 2000,
-    OpenWsWaitTimeout = 10000,
     DomContentLoaded = "domcontentloaded",
     EnterKey = "Enter",
     Green = "Green",
@@ -103,6 +103,9 @@ export enum Constants {
     UnsupportedFile="FileResources//testFile.dll",
     UnsupportedFileSizeMessage="File exceeds the allowed limit",
     UnsupportedFileTypeMessage="files are not supported",
+    EmptyFile="FileResources//LiveChatEmptyFileAttachment.txt",
+    EmptyFileAttachmentErrorMessage="This file can't be attached because it's empty. Please try again with a different file.",
+    PrechatBlankFieldMessage="field is required",
 }
 
 export const DiagnosticData = [
