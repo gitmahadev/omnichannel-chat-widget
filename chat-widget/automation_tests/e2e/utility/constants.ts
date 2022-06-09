@@ -98,14 +98,21 @@ export enum Constants {
     MessagetoAgent = "Hi Agent",
     PDFFile = "FileResources//Fileupload.pdf",
     PNGFile = "FileResources//SmallSizeImageAttachment.png",
-    JPGFile = "FileResources//testFile.jpg",
+    JPGFile = "FileResources//TestFile.jpg",
     LargePNGFile="FileResources//LargeSizeImageAttachment.png",
-    UnsupportedFile="FileResources//testFile.dll",
+    UnsupportedFile="FileResources//TestFile.dll",
     UnsupportedFileSizeMessage="File exceeds the allowed limit",
     UnsupportedFileTypeMessage="files are not supported",
     EmptyFile="FileResources//LiveChatEmptyFileAttachment.txt",
     EmptyFileAttachmentErrorMessage="This file can't be attached because it's empty. Please try again with a different file.",
     PrechatBlankFieldMessage="field is required",
+}
+
+export enum TimeoutConstants {
+  MaxTimeout = 8000,
+  DefaultTimeout = 2000,
+  OpenWsWaitTimeout = 10000,
+  FourtySecondsTimeout=40000,
 }
 
 export const DiagnosticData = [

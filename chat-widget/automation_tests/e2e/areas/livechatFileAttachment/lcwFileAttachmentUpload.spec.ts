@@ -83,13 +83,26 @@ describe("LCW customization for file attachment", () => {
     ///<summary>
     /// Test Case 2698820: [LCW Customization] [File Attachment] Validate files with zero size (0 bytes) cannot be uploaded and it doesn't block runtime
     /// </summary>
-    it.only("2698820: [LCW Customization] [File Attachment] Validate files with zero size (0 bytes) cannot be uploaded and it doesn't block runtime", async () => {
+    it("2698820: [LCW Customization] [File Attachment] Validate files with zero size (0 bytes) cannot be uploaded and it doesn't block runtime", async () => {
         livechatpage = new LiveChatPage(await liveChatContext.newPage());
         await livechatpage.openLiveChatWidget(CustomLiveChatWidgetConstants.CustomLCWAttachmentPrechatWidgetFilePath);
         await livechatpage.OpenChatWidget();
         await livechatpage.FillPrechatSurvey();
         await livechatpage.sendAttachment(Constants.EmptyFile);
         expect(await livechatpage.validateSelectorMessages(Constants.EmptyFileAttachmentErrorMessage,SelectorConstants.EmptyFileMsg)).toBeTruthy();
+        livechatpage.closePage();
+    });
+
+    ///<summary>
+    /// Test Case 2698816: [LCW Customization] [File Attachment] Validate files of unsupported file size cannot be uploaded
+    /// </summary>
+    it("2698816: [LCW Customization] [File Attachment] Validate files of unsupported file size cannot be uploaded", async () => {
+        livechatpage = new LiveChatPage(await liveChatContext.newPage());
+        await livechatpage.openLiveChatWidget(CustomLiveChatWidgetConstants.CustomLCWAttachmentPrechatWidgetFilePath);
+        await livechatpage.OpenChatWidget();
+        await livechatpage.FillPrechatSurvey();
+        await livechatpage.sendAttachment(Constants.LargePNGFile);
+        expect(await livechatpage.validateSelectorMessages(Constants.UnsupportedFileSizeMessage,SelectorConstants.LimitExceedsMsg)).toBeTruthy();
         livechatpage.closePage();
     });
 });

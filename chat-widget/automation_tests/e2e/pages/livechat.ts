@@ -1,7 +1,6 @@
 import { BrowserContext, Page } from "playwright";
-import { Constants, CustomLiveChatWidgetConstants, SelectorConstants } from "Utility/constants";
+import { Constants, CustomLiveChatWidgetConstants, SelectorConstants, TimeoutConstants } from "Utility/constants";
 import { BasePage } from "./base.page";
-import { DefaultTimeoutConstants, TimeoutConstants } from "./timeout-constants";
 
 export const LCWConstants = {
     SendButtonXPathBlob:
@@ -156,7 +155,7 @@ export class LiveChatPage extends BasePage {
         await this.waitForDomContentLoaded();
         await textArea.fill(message);
         await this.Page.keyboard.press(Constants.EnterKey, {
-            delay: DefaultTimeoutConstants.Default,
+            delay: TimeoutConstants.FourtySecondsTimeout,
         });
         await this.waitUntilFrameIsVisible(
             sendXPath,

@@ -1,6 +1,7 @@
 import { Page } from "playwright";
 import fs from "fs";
-import { CustomLiveChatWidgetConstants } from "e2e/utility/constants";
+import { TimeoutConstants } from "Utility/constants";
+
 
 export class BasePage {
     protected isBaseClosed = false;
@@ -40,7 +41,7 @@ export class BasePage {
         selectorVal: string,
         maxCount = 3,
         page: Page = null,
-        timeout: number = CustomLiveChatWidgetConstants.DefaultTimeout
+        timeout: number = TimeoutConstants.DefaultTimeout
     ) {
         let dataCount = 0;
         const pageObject = page ?? this.Page;
