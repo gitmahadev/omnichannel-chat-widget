@@ -83,6 +83,10 @@ export enum SelectorConstants {
    EmptyFileMsg="//div[@aria-label='Notification']/div[contains(text(),'empty')]",
    PrechatNameErrorMessage="//div[contains(text(),'Name field is required')]",
    PrechatConsentErrorMessage="//div[contains(text(),'Consent field is required')]",
+   //Prechat Selectors
+   Prechatwidget = "//*[@id='oc-lcw-prechatsurvey-pane']",
+   MinimizeButton = "//*[@id='oc-lcw-header-minimize-button']",
+   PrechatInputBox = "//input[@class='ac-input ac-textInput ac-input-required']",
 }
 
 
@@ -106,6 +110,7 @@ export enum Constants {
     EmptyFile="FileResources//LiveChatEmptyFileAttachment.txt",
     EmptyFileAttachmentErrorMessage="This file can't be attached because it's empty. Please try again with a different file.",
     PrechatBlankFieldMessage="field is required",
+    Input = "prechat"
 }
 
 export enum TimeoutConstants {

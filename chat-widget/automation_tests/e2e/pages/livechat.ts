@@ -496,4 +496,25 @@ export class LiveChatPage extends BasePage {
         const text= await this.validateSelectorMessages(Constants.PrechatBlankFieldMessage,selector);
         return text;
     }
+
+    public async visiblePrechat() {
+        expect(await this.waitUntilSelectorIsVisible(SelectorConstants.Prechatwidget)).toBeTruthy();
+        expect(await this.waitUntilSelectorIsVisible(CustomLiveChatWidgetConstants.LiveChatButtomId)).toBeFalsy();
+        await this.Page.click(SelectorConstants.PrechatInputBox);
+        await this.Page.fill(SelectorConstants.PrechatInputBox, Constants.Input);
+    }
+  
+    public async minimizePrechatwidget() {
+        await this.Page.click(SelectorConstants.MinimizeButton);
+        expect(await this.waitUntilSelectorIsVisible(SelectorConstants.Prechatwidget)).toBeFalsy();
+        expect(await this.waitUntilSelectorIsVisible(CustomLiveChatWidgetConstants.LiveChatButtomId)).toBeTruthy();
+    }
+  
+    public async maximizePrechatwidget() {
+        await this.Page.click(CustomLiveChatWidgetConstants.LiveChatButtomId);
+        const text = await this._page.$eval(SelectorConstants.PrechatInputBox, el => (el as HTMLInputElement).value);
+        if ( text != "") {
+            return true;
+        }
+    }
 }

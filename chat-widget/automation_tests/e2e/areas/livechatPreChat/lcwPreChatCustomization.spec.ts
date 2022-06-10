@@ -31,4 +31,17 @@ describe("LCW Pre Chat customization", () => {
         expect(await livechatpage.validateBlankPrechatSurveyQuestions(SelectorConstants.PrechatConsentErrorMessage)).toBeTruthy();
         livechatpage.closePage();
     });
+
+    ///<Summary>
+    ///Test Case 2696909: [LCW Customization] [Pre Chat] Ability to minimize an already maximized unsubmitted prechat widget, and vice versa
+    ///</Summary> 
+    it("Ability to minimize an already maximized unsubmitted prechat widget, and vice versa", async () => {
+        livechatpage = new LiveChatPage(await context.newPage());
+        await livechatpage.openLiveChatWidget(CustomLiveChatWidgetConstants.CustomLCWAttachmentPrechatWidgetFilePath);
+        await livechatpage.OpenChatWidget();
+        await livechatpage.visiblePrechat();
+        await livechatpage.minimizePrechatwidget();
+        expect(await livechatpage.maximizePrechatwidget()).toBeTruthy();
+        await livechatpage.closePage();
+    });
 });
