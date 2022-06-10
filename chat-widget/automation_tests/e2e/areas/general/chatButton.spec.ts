@@ -28,7 +28,7 @@ describe("live chat button", () => {
         page = new BasePage(await context.newPage());
         await page.openLiveChatWidget(CustomLiveChatWidgetConstants.CustomLiveChatWidgetFilePath);
         await page.waitUntilLiveChatSelectorIsVisible(
-            CustomLiveChatWidgetConstants.LiveChatButtomId
+            CustomLiveChatWidgetConstants.LiveChatButtonId
         );
     });
 });

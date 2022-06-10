@@ -110,9 +110,9 @@ export enum Constants {
 
 export enum TimeoutConstants {
   MaxTimeout = 8000,
-  DefaultTimeout = 2000,
   OpenWsWaitTimeout = 10000,
   FourtySecondsTimeout=40000,
+  DefaultTimeout = 1000
 }
 
 export const DiagnosticData = [
